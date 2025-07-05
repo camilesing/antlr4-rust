@@ -3,24 +3,24 @@
 #![allow(nonstandard_style)]
 #![allow(unused_imports)]
 #![allow(unused_variables)]
-use antlr_rust::atn::ATN;
-use antlr_rust::atn_deserializer::ATNDeserializer;
-use antlr_rust::char_stream::CharStream;
-use antlr_rust::dfa::DFA;
-use antlr_rust::error_listener::ErrorListener;
-use antlr_rust::int_stream::IntStream;
-use antlr_rust::lexer::{BaseLexer, Lexer, LexerRecog};
-use antlr_rust::lexer_atn_simulator::{ILexerATNSimulator, LexerATNSimulator};
-use antlr_rust::parser_rule_context::{cast, BaseParserRuleContext, ParserRuleContext};
-use antlr_rust::recognizer::{Actions, Recognizer};
-use antlr_rust::rule_context::{BaseRuleContext, EmptyContext, EmptyCustomRuleContext};
-use antlr_rust::token::*;
-use antlr_rust::token_factory::{CommonTokenFactory, TokenAware, TokenFactory};
-use antlr_rust::vocabulary::{Vocabulary, VocabularyImpl};
-use antlr_rust::PredictionContextCache;
-use antlr_rust::TokenSource;
+use antlr4_rust::atn::ATN;
+use antlr4_rust::atn_deserializer::ATNDeserializer;
+use antlr4_rust::char_stream::CharStream;
+use antlr4_rust::dfa::DFA;
+use antlr4_rust::error_listener::ErrorListener;
+use antlr4_rust::int_stream::IntStream;
+use antlr4_rust::lexer::{BaseLexer, Lexer, LexerRecog};
+use antlr4_rust::lexer_atn_simulator::{ILexerATNSimulator, LexerATNSimulator};
+use antlr4_rust::parser_rule_context::{cast, BaseParserRuleContext, ParserRuleContext};
+use antlr4_rust::recognizer::{Actions, Recognizer};
+use antlr4_rust::rule_context::{BaseRuleContext, EmptyContext, EmptyCustomRuleContext};
+use antlr4_rust::token::*;
+use antlr4_rust::token_factory::{CommonTokenFactory, TokenAware, TokenFactory};
+use antlr4_rust::vocabulary::{Vocabulary, VocabularyImpl};
+use antlr4_rust::PredictionContextCache;
+use antlr4_rust::TokenSource;
 
-use antlr_rust::{lazy_static, Tid, TidAble, TidExt};
+use antlr4_rust::{lazy_static, Tid, TidAble, TidExt};
 
 use std::cell::RefCell;
 use std::marker::PhantomData;
@@ -77,7 +77,7 @@ pub struct VisitorCalcLexer<'input, Input: CharStream<From<'input>>> {
     base: BaseLexer<'input, VisitorCalcLexerActions, Input, LocalTokenFactory<'input>>,
 }
 
-antlr_rust::tid! { impl<'input,Input> TidAble<'input> for VisitorCalcLexer<'input,Input> where Input:CharStream<From<'input> > }
+antlr4_rust::tid! { impl<'input,Input> TidAble<'input> for VisitorCalcLexer<'input,Input> where Input:CharStream<From<'input> > }
 
 impl<'input, Input: CharStream<From<'input>>> Deref for VisitorCalcLexer<'input, Input> {
     type Target = BaseLexer<'input, VisitorCalcLexerActions, Input, LocalTokenFactory<'input>>;
@@ -110,7 +110,7 @@ impl<'input, Input: CharStream<From<'input>>> VisitorCalcLexer<'input, Input> {
     }
 
     pub fn new_with_token_factory(input: Input, tf: &'input LocalTokenFactory<'input>) -> Self {
-        antlr_rust::recognizer::check_version("0", "3");
+        antlr4_rust::recognizer::check_version("0", "4");
         Self {
             base: BaseLexer::new_base_lexer(
                 input,
@@ -192,7 +192,7 @@ impl<'input, Input: CharStream<From<'input>>> TokenSource<'input>
 lazy_static! {
     static ref _ATN: Arc<ATN> =
         Arc::new(ATNDeserializer::new(None).deserialize(_serializedATN.chars()));
-    static ref _decision_to_DFA: Arc<Vec<antlr_rust::RwLock<DFA>>> = {
+    static ref _decision_to_DFA: Arc<Vec<antlr4_rust::RwLock<DFA>>> = {
         let mut dfa = Vec::new();
         let size = _ATN.decision_to_state.len();
         for i in 0..size {
