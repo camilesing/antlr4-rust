@@ -952,13 +952,24 @@ TokenTypeDecl(t) ::= "let mut <t.name>: isize = -1;"
 TokenListDecl(t) ::= "<t.name>:Vec\<<TokenLabelType()>>"
 RuleContextDecl(r) ::= "<r.name>: Option\<Rc\<<r.ctxName>All\<'input>>>"
 RuleContextListDecl(rdecl) ::= "<rdecl.name>:Vec\<Rc\<<rdecl.ctxName>All\<'input>>>"
+//copy from https://doc.rust-lang.org/reference/keywords.html
+RustKeywords ::= [
+    "as", "break", "const", "continue", "crate", "else", "enum", "extern",
+    "false", "fn", "for", "if", "impl", "in", "let", "loop", "match", "mod",
+    "move", "mut", "pub", "ref", "return", "self", "Self", "static", "struct",
+    "super", "trait", "true", "type", "unsafe", "use", "where", "while","async",
+    "await","dyn","abstract","become","box","do","final","marco","overried","priv",
+    "typeof","unsized","virtual","yield","try","gen","'static","macro_rules","raw",
+    "union"
+]
 
-ContextTokenGetterDecl(t)      ::= <<
+ContextTokenGetterDecl(t) ::= <<
 /// Retrieves first TerminalNode corresponding to token <t.name>
 /// Returns `None` if there is no child corresponding to token <t.name>
-fn <t.name>(&self) -> Option\<Rc\<TerminalNode\<'input,<parser.name>ContextType>\>> where Self:Sized{
+fn <if(RustKeywords.(t.name))>r#<endif><t.name>(&self) -> Option\<Rc\<TerminalNode\<'input,<parser.name>ContextType>\>> where Self:Sized{
 	self.get_token(<t.name>, 0)
-}>>
+}
+>>
 ContextTokenListGetterDecl(t)  ::=<<
 /// Retrieves all `TerminalNode`s corresponding to token <t.name> in current rule
 fn <t.name>_all(&self) -> Vec\<Rc\<TerminalNode\<'input,<parser.name>ContextType>\>>  where Self:Sized{
