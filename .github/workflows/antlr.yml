@@ -53,7 +53,7 @@ jobs:
         if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
         with:
           name: antlr-tool
-          path: tool/target/antlr4-4.8-2-SNAPSHOT-complete.jar
+          path: tool/target/antlr4-4.8-2-complete.jar
 
   tests-rust:
     name: cargo test

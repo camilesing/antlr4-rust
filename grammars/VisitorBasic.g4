@@ -1,7 +1,8 @@
 grammar VisitorBasic;
 
 s
-	:	'A' EOF
+	:	A S EOF
 	;
 
 A : 'A';
+S : 'S';

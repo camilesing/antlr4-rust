@@ -973,7 +973,7 @@ fn <if(RustKeywords.(t.name))>r#<endif><t.name>(&self) -> Option\<Rc\<TerminalNo
 ContextTokenListGetterDecl(t)  ::=<<
 /// Retrieves all `TerminalNode`s corresponding to token <t.name> in current rule
 fn <t.name>_all(&self) -> Vec\<Rc\<TerminalNode\<'input,<parser.name>ContextType>\>>  where Self:Sized{
-	self.children_of_type()
+	self.get_tokens(<t.name>)
 }>>
 ContextTokenListIndexedGetterDecl(t)  ::= <<
 /// Retrieves 'i's TerminalNode corresponding to token <t.name>, starting from 0.
