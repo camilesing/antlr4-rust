@@ -11,11 +11,12 @@ mod gen {
     use std::fmt::Write;
     use std::io::Read;
     use std::iter::FromIterator;
-   
+
     use antlr4_rust::common_token_stream::CommonTokenStream;
     use antlr4_rust::int_stream::IntStream;
     use antlr4_rust::lexer::Lexer;
 
+    use antlr4_rust::rule_context::CustomRuleContext;
     use antlr4_rust::token::{Token, TOKEN_EOF};
     use antlr4_rust::token_factory::{ArenaCommonFactory, OwningTokenFactory};
     use antlr4_rust::token_stream::{TokenStream, UnbufferedTokenStream};
@@ -24,7 +25,6 @@ mod gen {
         TerminalNode, Tree, VisitChildren, Visitable,
     };
     use antlr4_rust::InputStream;
-    use antlr4_rust::rule_context::CustomRuleContext;
     use csvlexer::*;
     use csvlistener::*;
     use csvparser::CSVParser;
@@ -338,19 +338,41 @@ if (x < x && a > 0) then duh
 
     #[test]
     fn test_complex_convert() {
+        use labelsparser::*;
+
+        struct Listener(String);
+
+        impl ParseTreeListener<'_, LabelsParserContextType> for Listener {}
+        impl<'input> labelslistener::LabelsListener<'input> for Listener {
+            fn enter_add(&mut self, _ctx: &AddContext<'input>) {
+                self.0.push('(');
+            }
+
+            fn exit_add(&mut self, ctx: &AddContext<'input>) {
+                self.0 += ctx.get_v();
+                self.0.push(')');
+            }
+        }
+
         let codepoints = "(a+4)*2".chars().map(|x| x as u32).collect::<Vec<_>>();
         // let codepoints = "(a+4)*2";
         let input = InputStream::new(&*codepoints);
         let lexer = LabelsLexer::new(input);
         let token_source = CommonTokenStream::new(lexer);
         let mut parser = LabelsParser::new(token_source);
-        let result = parser.s().expect("parser error");
-        let string = result.q.as_ref().unwrap().get_v();
+
+        let root = parser.s().expect("parser error");
+        let string = root.q.as_ref().unwrap().get_v();
         assert_eq!("* + a 4 2", string);
-        let x = result.q.as_deref().unwrap();
+        let x = root.q.as_deref().unwrap();
+
         match x {
             EContextAll::MultContext(x) => assert_eq!("(a+4)", x.a.as_ref().unwrap().get_text()),
             _ => panic!("oops"),
         }
+
+        let mut listener = Listener(String::new());
+        LabelsTreeWalker::walk_mut(&mut listener, &*root);
+        assert_eq!(listener.0, "(+ a 4)");
     }
 }

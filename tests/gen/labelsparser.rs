@@ -504,6 +504,11 @@ impl<'input, 'a> Listenable<dyn LabelsListener<'input> + 'a> for AddContext<'inp
         listener.enter_every_rule(self);
         listener.enter_add(self);
     }
+
+    fn exit(&self, listener: &mut (dyn LabelsListener<'input> + 'a)) {
+        listener.exit_add(self);
+        listener.exit_every_rule(self);
+    }
 }
 
 impl<'input> CustomRuleContext<'input> for AddContextExt<'input> {
@@ -569,6 +574,11 @@ impl<'input, 'a> Listenable<dyn LabelsListener<'input> + 'a> for ParensContext<'
     fn enter(&self, listener: &mut (dyn LabelsListener<'input> + 'a)) {
         listener.enter_every_rule(self);
         listener.enter_parens(self);
+    }
+
+    fn exit(&self, listener: &mut (dyn LabelsListener<'input> + 'a)) {
+        listener.exit_parens(self);
+        listener.exit_every_rule(self);
     }
 }
 
@@ -645,6 +655,11 @@ impl<'input, 'a> Listenable<dyn LabelsListener<'input> + 'a> for MultContext<'in
         listener.enter_every_rule(self);
         listener.enter_mult(self);
     }
+
+    fn exit(&self, listener: &mut (dyn LabelsListener<'input> + 'a)) {
+        listener.exit_mult(self);
+        listener.exit_every_rule(self);
+    }
 }
 
 impl<'input> CustomRuleContext<'input> for MultContextExt<'input> {
@@ -711,6 +726,11 @@ impl<'input, 'a> Listenable<dyn LabelsListener<'input> + 'a> for DecContext<'inp
     fn enter(&self, listener: &mut (dyn LabelsListener<'input> + 'a)) {
         listener.enter_every_rule(self);
         listener.enter_dec(self);
+    }
+
+    fn exit(&self, listener: &mut (dyn LabelsListener<'input> + 'a)) {
+        listener.exit_dec(self);
+        listener.exit_every_rule(self);
     }
 }
 
@@ -779,6 +799,11 @@ impl<'input, 'a> Listenable<dyn LabelsListener<'input> + 'a> for AnIDContext<'in
         listener.enter_every_rule(self);
         listener.enter_anID(self);
     }
+
+    fn exit(&self, listener: &mut (dyn LabelsListener<'input> + 'a)) {
+        listener.exit_anID(self);
+        listener.exit_every_rule(self);
+    }
 }
 
 impl<'input> CustomRuleContext<'input> for AnIDContextExt<'input> {
@@ -846,6 +871,11 @@ impl<'input, 'a> Listenable<dyn LabelsListener<'input> + 'a> for AnIntContext<'i
         listener.enter_every_rule(self);
         listener.enter_anInt(self);
     }
+
+    fn exit(&self, listener: &mut (dyn LabelsListener<'input> + 'a)) {
+        listener.exit_anInt(self);
+        listener.exit_every_rule(self);
+    }
 }
 
 impl<'input> CustomRuleContext<'input> for AnIntContextExt<'input> {
@@ -910,6 +940,11 @@ impl<'input, 'a> Listenable<dyn LabelsListener<'input> + 'a> for IncContext<'inp
     fn enter(&self, listener: &mut (dyn LabelsListener<'input> + 'a)) {
         listener.enter_every_rule(self);
         listener.enter_inc(self);
+    }
+
+    fn exit(&self, listener: &mut (dyn LabelsListener<'input> + 'a)) {
+        listener.exit_inc(self);
+        listener.exit_every_rule(self);
     }
 }
 
